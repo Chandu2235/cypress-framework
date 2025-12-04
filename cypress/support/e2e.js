@@ -1,6 +1,3 @@
-// Import cypress-multi-reporters plugin
-require('cypress-multi-reporters/plugin');
-
 // Custom commands
 Cypress.Commands.add('login', (username, password) => {
   const loginPage = require('../pageObjects/LoginPage');

@@ -22,6 +22,7 @@ pipeline {
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -31,8 +32,12 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    echo 'Installing dependencies...'
-                    sh 'npm install'
+                    echo 'Installing npm dependencies...'
+                    if (isUnix()) {
+                        sh 'npm install'
+                    } else {
+                        bat 'npm install'
+                    }
                 }
             }
         }
@@ -40,8 +45,13 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    echo "Running tests with ${params.BROWSER} browser..."
-                    sh "npm run test -- --spec '${params.SPEC}' --browser ${params.BROWSER}"
+                    echo "Running Cypress tests in ${params.BROWSER} browser..."
+
+                    if (isUnix()) {
+                        sh "npm run test -- --spec \"${params.SPEC}\" --browser ${params.BROWSER}"
+                    } else {
+                        bat "npm run test -- --spec \"${params.SPEC}\" --browser ${params.BROWSER}"
+                    }
                 }
             }
         }
@@ -49,8 +59,12 @@ pipeline {
         stage('Database Migration') {
             steps {
                 script {
-                    echo 'Running database migrations...'
-                    sh 'npm run db:migrate'
+                    echo "Running DB migrations..."
+                    if (isUnix()) {
+                        sh 'npm run db:migrate'
+                    } else {
+                        bat 'npm run db:migrate'
+                    }
                 }
             }
         }
@@ -58,9 +72,15 @@ pipeline {
         stage('Report Generation') {
             steps {
                 script {
-                    echo 'Generating test reports...'
-                    sh 'npx mochawesome-merge "cypress/reports/mochawesome*.json" > cypress/reports/mochawesome.json'
-                    sh 'npx mochawesome-report-generator cypress/reports/mochawesome.json -o cypress/reports/html'
+                    echo 'Generating Mochawesome report...'
+
+                    if (isUnix()) {
+                        sh 'npx mochawesome-merge "cypress/reports/mochawesome*.json" > cypress/reports/mochawesome.json'
+                        sh 'npx mochawesome-report-generator cypress/reports/mochawesome.json -o cypress/reports/html'
+                    } else {
+                        bat 'npx mochawesome-merge "cypress\\reports\\mochawesome*.json" > cypress\\reports\\mochawesome.json'
+                        bat 'npx mochawesome-report-generator cypress\\reports\\mochawesome.json -o cypress\\reports\\html'
+                    }
                 }
             }
         }
@@ -68,8 +88,13 @@ pipeline {
         stage('TestRail Integration') {
             steps {
                 script {
-                    echo 'Publishing results to TestRail...'
-                    sh 'npm run testrail:report'
+                    echo 'Uploading results to TestRail...'
+
+                    if (isUnix()) {
+                        sh 'npm run testrail:report'
+                    } else {
+                        bat 'npm run testrail:report'
+                    }
                 }
             }
         }
@@ -77,36 +102,39 @@ pipeline {
 
     post {
         always {
-            // Archive test reports
+
+            // Archive all reports & videos
             archiveArtifacts artifacts: 'cypress/reports/**', allowEmptyArchive: true
             archiveArtifacts artifacts: 'cypress/screenshots/**', allowEmptyArchive: true
             archiveArtifacts artifacts: 'cypress/videos/**', allowEmptyArchive: true
 
-            // Publish HTML report
-            publishHTML([
+            // Publish HTML report using explicit HtmlPublisher step for broader plugin compatibility
+            step([$class: 'HtmlPublisher', reportTargets: [[
+                reportName: 'Cypress Test Report',
                 reportDir: 'cypress/reports/html',
                 reportFiles: 'mochawesome.html',
-                reportName: 'Cypress Test Report'
-            ])
+                keepAll: true,
+                alwaysLinkToLastBuild: true,
+                allowMissing: true
+            ]]])
 
-            // Clean workspace
             cleanWs()
         }
 
         success {
-            echo 'Tests executed successfully!'
+            echo 'Tests executed SUCCESSFULLY!'
             emailext(
                 subject: 'Cypress Tests - SUCCESS',
-                body: 'All tests passed successfully.',
+                body: 'All tests passed successfully. ✔',
                 to: '${DEFAULT_RECIPIENTS}'
             )
         }
 
         failure {
-            echo 'Tests failed!'
+            echo 'Cypress Tests FAILED!'
             emailext(
                 subject: 'Cypress Tests - FAILURE',
-                body: 'Some tests failed. Check the report for details.',
+                body: 'Some tests failed. Please check attached report.',
                 to: '${DEFAULT_RECIPIENTS}'
             )
         }
