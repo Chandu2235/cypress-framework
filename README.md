@@ -6,6 +6,9 @@ VSCode with github copilot integration
 
 <img width="1918" height="1032" alt="image" src="https://github.com/user-attachments/assets/dbda081b-8c92-4ac8-bdda-b740c3f67f47" />
 
+<img width="1917" height="1078" alt="image" src="https://github.com/user-attachments/assets/a2f1a374-79d2-4ceb-b872-4ac35a6822f0" />
+
+
 # Cypress Banking Framework
 
 ## Features
