@@ -1,0 +1,85 @@
+name: Cypress Tests CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    - cron: '0 2 * * *' # Daily at 2 AM
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: banking_db
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+        browser: [chrome, firefox]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run migrations
+        run: npm run db:migrate
+        env:
+          DB_HOST: localhost
+          DB_PASSWORD: rootpassword
+
+      - name: Run Cypress tests - ${{ matrix.browser }}
+        run: npm run test -- --browser ${{ matrix.browser }}
+        env:
+          BASE_URL: https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login
+
+      - name: Generate reports
+        if: always()
+        run: |
+          npx mochawesome-merge "cypress/reports/mochawesome*.json" > cypress/reports/mochawesome.json
+          npx mochawesome-report-generator cypress/reports/mochawesome.json -o cypress/reports/html
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-reports-${{ matrix.browser }}
+          path: |
+            cypress/reports/
+            cypress/screenshots/
+            cypress/videos/
+
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('cypress/reports/summary.json', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## Test Results\n${summary}`
+            });

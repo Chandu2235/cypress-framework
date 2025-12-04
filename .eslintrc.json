@@ -1,0 +1,8 @@
+{
+  "env": "browser",
+  "extends": ["plugin:cypress/recommended"],
+  "rules": {
+    "no-unused-vars": "warn",
+    "no-console": "off"
+  }
+}

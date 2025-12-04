@@ -1,0 +1,96 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Cypress: Run All Tests",
+      "type": "shell",
+      "command": "npm",
+      "args": ["test"],
+      "problemMatcher": [],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Cypress: Open Test Runner",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "test:open"],
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Cypress: Run Smoke Tests",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "test:smoke"],
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Cypress: Run Regression Tests",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "test:regression"],
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Cypress: Run Tests (Chrome)",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "test:chrome"],
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Cypress: Run Tests (Firefox)",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "test:firefox"],
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Database: Run Migrations",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "db:migrate"],
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Lint: Check Code Quality",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "lint"],
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Docker: Start Services",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["up"],
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Docker: Stop Services",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["down"],
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "TestRail: Report Results",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "testrail:report"],
+      "problemMatcher": [],
+      "group": "build"
+    }
+  ]
+}

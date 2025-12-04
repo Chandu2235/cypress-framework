@@ -1,0 +1,44 @@
+{
+  "name": "cypress-banking-framework",
+  "version": "1.0.0",
+  "description": "Cypress automation framework with POM pattern for banking application",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress run",
+    "test:headed": "cypress run --headed",
+    "test:open": "cypress open",
+    "test:chrome": "cypress run --browser chrome",
+    "test:firefox": "cypress run --browser firefox",
+    "test:smoke": "cypress run --spec 'cypress/e2e/smoke/**/*.cy.js'",
+    "test:regression": "cypress run --spec 'cypress/e2e/regression/**/*.cy.js'",
+    "test:debug": "cypress run --headed --no-exit",
+    "test:record": "cypress run --record",
+    "lint": "eslint cypress/**/*.js",
+    "db:migrate": "node scripts/db/migrate.js",
+    "testrail:report": "node scripts/testrail/testrail-reporter.js"
+  },
+  "keywords": [
+    "cypress",
+    "automation",
+    "e2e",
+    "banking",
+    "pom"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@cypress/schematic": "^2.5.1",
+    "cypress": "^13.6.0",
+    "cypress-multi-reporters": "^1.6.4",
+    "eslint": "^8.53.0",
+    "eslint-plugin-cypress": "^2.15.1",
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^4.3.0",
+    "mochawesome-report-generator": "^6.2.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "mysql2": "^3.6.5",
+    "node-fetch": "^2.7.0"
+  }
+}

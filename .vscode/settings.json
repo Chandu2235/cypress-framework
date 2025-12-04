@@ -1,0 +1,24 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.rulers": [80, 120],
+  "files.exclude": {
+    "node_modules": true,
+    "cypress/screenshots": true,
+    "cypress/videos": true,
+    "cypress/reports": true,
+    ".env": true
+  },
+  "search.exclude": {
+    "node_modules": true,
+    "cypress/reports": true,
+    "cypress/videos": true,
+    "cypress/screenshots": true
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

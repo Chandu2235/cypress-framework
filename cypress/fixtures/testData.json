@@ -1,0 +1,29 @@
+{
+  "validLoginCredentials": {
+    "username": "testuser",
+    "password": "password123"
+  },
+  "invalidLoginCredentials": {
+    "username": "invaliduser",
+    "password": "invalidpass"
+  },
+  "customers": [
+    {
+      "name": "Harry Potter",
+      "id": "1"
+    },
+    {
+      "name": "Hermoine Granger",
+      "id": "2"
+    },
+    {
+      "name": "Ron Weasley",
+      "id": "3"
+    }
+  ],
+  "testData": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "postCode": "12345"
+  }
+}

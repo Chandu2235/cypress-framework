@@ -1,0 +1,15 @@
+{
+  "reporterOptions": {
+    "reportDir": "cypress/reports",
+    "reportFilename": "mochawesome",
+    "reportTitle": "Cypress Banking Framework Test Report",
+    "reportPageTitle": "Banking Application Tests",
+    "html": true,
+    "json": true,
+    "overwrite": true,
+    "timestamp": "longDate",
+    "charts": true,
+    "embeddedScreenshots": true,
+    "inlineAssets": true
+  }
+}

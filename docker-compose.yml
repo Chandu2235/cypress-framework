@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  cypress:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: cypress-tests
+    environment:
+      - BASE_URL=https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=rootpassword
+      - DB_NAME=banking_db
+      - TESTRAIL_URL=${TESTRAIL_URL}
+      - TESTRAIL_EMAIL=${TESTRAIL_EMAIL}
+      - TESTRAIL_API_KEY=${TESTRAIL_API_KEY}
+    volumes:
+      - ./cypress/reports:/app/cypress/reports
+      - ./cypress/screenshots:/app/cypress/screenshots
+      - ./cypress/videos:/app/cypress/videos
+    depends_on:
+      - db
+    networks:
+      - cypress-network
+
+  db:
+    image: mysql:8.0
+    container_name: banking-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=banking_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - cypress-network
+
+volumes:
+  db-data:
+
+networks:
+  cypress-network:
+    driver: bridge
