@@ -1,6 +1,11 @@
-# Cypress Banking Framework
+<img width="1918" height="1075" alt="image" src="https://github.com/user-attachments/assets/e2bc5570-259a-4e98-a80e-396dd9dd5e75" />
 
-A comprehensive end-to-end automation testing framework for a banking application using Cypress with Page Object Model (POM) pattern. This project includes Jenkins CI/CD, Docker containerization, database integration, and TestRail reporting.
+VSCode with github copilot integration 
+<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/7c2e5228-0aed-417d-980f-0f9681c01c8c" />
+
+<img width="1918" height="1032" alt="image" src="https://github.com/user-attachments/assets/dbda081b-8c92-4ac8-bdda-b740c3f67f47" />
+
+# Cypress Banking Framework
 
 ## Features
 
